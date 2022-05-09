@@ -2,7 +2,6 @@ package com.example.missingpeople3;
 
 
 import android.content.Intent;
-import android.opengl.Visibility;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
@@ -21,8 +20,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.Objects;
 
 public class UserRegistration extends AppCompatActivity implements View.OnClickListener {
 
@@ -132,6 +129,7 @@ public class UserRegistration extends AppCompatActivity implements View.OnClickL
                                     if (task2.isSuccessful()) {
                                         Toast.makeText(UserRegistration.this, "Registreringen lyckades!", Toast.LENGTH_LONG).show();
                                         progressBar.setVisibility(View.GONE);
+                                        startActivity(new Intent(UserRegistration.this, userLocation.class));
                                     } else {
                                         Toast.makeText(UserRegistration.this, "Registreringen misslyckades! Försök igen!", Toast.LENGTH_LONG).show();
                                         progressBar.setVisibility(View.GONE);
