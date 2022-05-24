@@ -60,7 +60,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         //går att hämta sin sinaste position med markering
-        LatLng indiaLatLng = new LatLng(20.5937, 78.9629);
+        LatLng indiaLatLng = new LatLng(62.2, 17.1);
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(indiaLatLng));
         //enda filen jag kunde hitta med massa koordinater. Centrerar kameran över kandet.
     }

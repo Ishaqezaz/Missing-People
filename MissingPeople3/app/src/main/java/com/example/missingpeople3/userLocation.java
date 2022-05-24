@@ -24,24 +24,18 @@ public class userLocation extends AppCompatActivity implements LocationListener 
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReferenceFromUrl("https://missingpeople3-92f63-default-rtdb.firebaseio.com/");
-
     LocationManager locationManager;
-
-    private FirebaseAuth mAuth;
 
     final static String[] PERMISSIONS = {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
     final static int PERMISSION_ALL = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_maps);
-        startActivity(new Intent(userLocation.this, MapsActivity.class));
+        //startActivity(new Intent(userLocation.this, MapsActivity.class));
 
-        mAuth = FirebaseAuth.getInstance();
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReferenceFromUrl("https://missingpeople3-92f63-default-rtdb.firebaseio.com/");
-        
+
+
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         if(Build.VERSION.SDK_INT>=23){
             requestPermissions(PERMISSIONS, PERMISSION_ALL );
@@ -52,7 +46,7 @@ public class userLocation extends AppCompatActivity implements LocationListener 
                 @Override
                 public void run() {
                     requestLocation();
-                    handler.postDelayed(this, 1000 * 30); //delayMil = 1000(mil_sec)*30(sec)*0(min) Gives location updater every 3 min
+                    handler.postDelayed(this, 1000 * 10); //delayMil = 1000(mil_sec)*30(sec)*0(min) Gives location updater every 3 min
                 }
             },1000);
 
@@ -63,9 +57,10 @@ public class userLocation extends AppCompatActivity implements LocationListener 
     public void onLocationChanged(@NonNull Location location) {
         Log.d("mylog", "Get location:" + location.getLongitude() + "," + location.getLatitude());
 
+
         String lang = Double.toString(location.getLongitude());
         String lat = Double.toString(location.getLatitude());
-        
+
         myRef.child("users")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .child("lat").setValue(lat);
@@ -73,7 +68,6 @@ public class userLocation extends AppCompatActivity implements LocationListener 
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .child("lang").setValue(lang);
 
-        Toast.makeText(this, "Get location:" + location.getLongitude() + "," + location.getLatitude(), Toast.LENGTH_SHORT).show();
         locationManager.removeUpdates(this);
 
     }
@@ -82,13 +76,13 @@ public class userLocation extends AppCompatActivity implements LocationListener 
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if(grantResults.length>0 && grantResults[0]== PackageManager.PERMISSION_GRANTED){
-            //location request in here
+            startActivity(new Intent(userLocation.this, MapsActivity.class));
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     requestLocation();
-                    handler.postDelayed(this,1000 * 60 * 5);
+                    handler.postDelayed(this,1000 * 10);
                 }
             },1000);
 
@@ -104,8 +98,6 @@ public class userLocation extends AppCompatActivity implements LocationListener 
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000,10000, this);
             }
         }
-
-
     }
 
 }
